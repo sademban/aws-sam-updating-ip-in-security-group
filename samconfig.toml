@@ -1,0 +1,10 @@
+version = 0.1
+[default.deploy.parameters]
+stack_name = "RdsSecurityGroupUpdateStack"
+resolve_s3 = true
+s3_prefix = "RdsSecurityGroupUpdateStack"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+parameter_overrides = "SecurityGroupId=\"sg-0e17add11b9bf10a7\""

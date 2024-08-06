@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SAM Template to create a Lambda function, API Gateway, and required IAM roles.
+
+Parameters:
+  SecurityGroupId:
+    Type: String
+    Description: The ID of the Security Group to update with new IP addresses.
+
+Resources:
+
+  # Lambda Function
+  RdsSecurityGroupUpdateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: RdsSecurityGroupUpdateFunction  # Custom function name
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      CodeUri: ./src  # Adjust this to the correct path where your Lambda function code resides
+      Description: Lambda function to update RDS Security Group with new IP addresses.
+      MemorySize: 128
+      Timeout: 10
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - ec2:DescribeSecurityGroups
+                - ec2:AuthorizeSecurityGroupIngress
+                - ec2:RevokeSecurityGroupIngress
+              Resource: "*"
+      Environment:
+        Variables:
+          SECURITY_GROUP_ID: !Ref SecurityGroupId  # Dynamically setting the SECURITY_GROUP_ID environment variable
+      Events:
+        ApiGatewayEvent:
+          Type: Api
+          Properties:
+            Path: /update-ip
+            Method: post
+            RestApiId:
+              Ref: ApiGatewayApi
+
+  # API Gateway
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: "RDS Security Group API"
+        paths:
+          /update-ip:
+            post:
+              x-amazon-apigateway-integration:
+                uri:
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${RdsSecurityGroupUpdateFunction.Arn}/invocations
+                httpMethod: POST
+                type: aws_proxy
+              parameters:
+                - in: "body"
+                  name: "body"
+                  required: true
+                  schema:
+                    type: "object"
+                    required:
+                      - name
+                      - ip
+                    properties:
+                      name:
+                        type: "string"
+                      ip:
+                        type: "string"
+
+  # Request Validator for Body Validation
+  ApiGatewayRequestValidator:
+    Type: "AWS::ApiGateway::RequestValidator"
+    Properties:
+      Name: "Validate body"
+      RestApiId: !Ref ApiGatewayApi
+      ValidateRequestBody: true
+      ValidateRequestParameters: false
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/prod/update-ip"
+  LambdaFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt RdsSecurityGroupUpdateFunction.Arn
