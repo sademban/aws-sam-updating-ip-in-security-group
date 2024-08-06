@@ -23,10 +23,16 @@ sam delete
 
 ## *** note
 ```
-This setup is to update the ip for the developers who want access to the resources having security group. As the ip frequently change while you work from diffrent area therfore this simple configuration will help your team to update the ip in the SG of any resources. 
+This setup is to update the ip for the developers who want access to the resources having 
+security group. As the ip frequently change while you work from diffrent area therfore this
+simple configuration will help your team to update the ip in the SG of any resources. 
 
-It feels like its not a big deal to automate but if there is anyway i can imporve the simple utility automation please comment.
+It feels like its not a big deal to automate but if there is anyway i can imporve the simple 
+utility automation please comment.
 
 -- future plan
-i am planning to integrate this with skype bot so while you work in a team this configuration will simply help you update the ip in SG of required resources just by sending the name and ip to the dedicated channel in skype
+
+i am planning to integrate this with skype bot so while you work in a team this configuration 
+will simply help you update the ip in SG of required resources just by sending the name and ip 
+to the dedicated channel in skype
 ```
