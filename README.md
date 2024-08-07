@@ -23,9 +23,9 @@ sam delete
 
 ## *** note
 ```
-This setup is to update the ip for the developers who want access to the resources having 
-security group. As the ip frequently change while you work from diffrent area therfore this
-simple configuration will help your team to update the ip in the SG of any resources. 
+This setup is to update the ip in the security group for the developers on the aws resources . 
+As the ip frequently changes while you work from diffrent location, therfore this
+simple configuration will help your team to update the ip in the SG of any aws resources. 
 
 It feels like its not a big deal to automate but if there is anyway i can imporve the simple 
 utility automation please comment.
