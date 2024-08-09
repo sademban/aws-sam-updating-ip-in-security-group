@@ -36,3 +36,12 @@ i am planning to integrate this with skype bot so while you work in a team this 
 will simply help you update the ip in SG of required resources just by sending the name and ip 
 to the dedicated channel in skype
 ```
+
+## USE CASE
+```
+- after the resources are provisiones you can just simply send post request using curl to api gateway and update the ip address in SG
+eg:
+ curl -X POST https://<api-gateway>/<stage>/<resource> \
+-H "Content-Type: application/json" \
+-d '{"name": "johndoe", "ip": "1.1.1.1"}' 
+```
