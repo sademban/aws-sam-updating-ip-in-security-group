@@ -1,9 +1,14 @@
-## setup your aws access key required permission 
+# SETUP
+
+## setup your aws access key required permission
+
 - you can google it and setup the acces key first
 
 ## deploy
+
 from your  root directory just run the following: 
-```
+
+```python
 sam build
 
 sam deploy --guided
@@ -22,7 +27,8 @@ sam delete
 ```
 
 ## *** note
-```
+
+```python
 This setup is to update the ip in the security group for the developers on the aws resources . 
 As the ip frequently changes while you work from diffrent location, therfore this
 simple configuration will help your team to update the ip in the SG of any aws resources. 
@@ -38,8 +44,10 @@ to the dedicated channel in skype
 ```
 
 ## USE CASE
-```
-- after the resources are provisiones you can just simply send post request using curl to api gateway and update the ip address in SG
+
+```python
+
+- after the resources are provisioned you can just simply send post request using curl to api gateway and update the ip address in SG
 eg:
  curl -X POST https://<api-gateway>/<stage>/<resource> \
 -H "Content-Type: application/json" \
